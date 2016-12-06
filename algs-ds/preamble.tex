@@ -1,0 +1,47 @@
+\usepackage{tikz-dependency}
+\usepackage{pgfplots}
+\usepackage{verbatim}
+
+% Vectors
+\newcommand{\vect}[1]{\underline{#1}}
+
+% Matrices
+\newcommand{\mat}[1]{\mathbf{#1}}
+
+% Differentials
+\newcommand{\ud}{\, \mathrm{d}}
+\newcommand{\udf}{\mathrm{d}}
+
+% Sets
+\newcommand{\sbar}{\, | \,}
+\newcommand{\st}{\, . \,}
+
+% Inner product
+\newcommand{\innerprod}[2]{\langle #1,#2 \rangle}
+
+% Norm
+\newcommand{\norm}[1]{||#1||}
+
+% Numerical coding of pairs
+\newcommand{\fab}[2]{\langle \langle #1,#2 \rangle \rangle}
+\newcommand{\ab}[2]{\langle #1,#2 \rangle}
+\newcommand{\enc}[1]{\lceil #1 \rceil}
+
+% Configuration
+\newcommand{\conf}[2]{\langle #1,#2 \rangle}
+
+% Hoare triple
+\newcommand{\pcs}[3]{\{#1\} \ #2 \ \{#3\}}
+\newcommand{\tcs}[3]{[#1] \ #2 \ [#3]}
+
+% Discrete sequence
+\newcommand{\dsq}[1]{\{#1\}}
+
+% Braket
+\newcommand{\bra}[1]{\langle#1|}
+\newcommand{\ket}[1]{|#1\rangle}
+\newcommand{\bk}[2]{\langle#1|#2\rangle}
+
+% Argmin/max
+\DeclareMathOperator*{\argmax}{arg\!\max}
+\DeclareMathOperator*{\argmin}{arg\!\min}
