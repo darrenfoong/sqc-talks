@@ -80,10 +80,77 @@ $ b41e... is the first bad commit
 
 \begin{frame}
  \frametitle{Binary search trees}
+ \begin{itemize}
+  \item A binary tree with \emph{ordered keys}
+   \begin{itemize}
+    \item left child is less than parent
+    \item right child is greater than parent
+   \end{itemize}
+  \item \emph{In-order traversal} returns keys in sorted order
+  \item Time complexity for searching, insertion, and deletion is
+        proportional to \emph{height} of the tree; $O(\lg n)$ for a
+        balanced tree
+ \end{itemize}
+ \begin{center}
+  \scalebox{1.0} {
+   \begin{tikzpicture}[every tree node/.style={minimum width=0.5cm,
+                                               draw,
+                                               circle},
+                       edge from parent/.style={draw,
+                                                edge from parent path={
+                                                 (\tikzparentnode) --
+                                                 (\tikzchildnode)}},
+                       sibling distance=1.0cm,
+                       level distance=1.5cm]
+    \Tree [.4 [.2 [.1 ] [.3 ] ] [.6 [.5 ] [.7 ] ] ]
+   \end{tikzpicture}
+  }
+ \end{center}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Pathological cases}
+ \begin{itemize}
+  \item A binary search tree can end up unbalanced depending on the
+        order of operations
+  \item Insert na\"ively $1,2,\ldots,7$ in order:
+ \end{itemize}
+ \begin{center}
+  \scalebox{0.5} {
+   \begin{tikzpicture}[every tree node/.style={minimum width=0.5cm,
+                                               draw,
+                                               circle},
+                       edge from parent/.style={draw,
+                                                edge from parent path={
+                                                 (\tikzparentnode) --
+                                                 (\tikzchildnode)}},
+                       sibling distance=1.0cm,
+                       level distance=1.5cm,
+                       blank/.style={color=gray,dashed}]
+    \Tree [.1 \edge[blank]{}; \node[blank]{};
+              [.2 \edge[blank]{}; \node[blank]{};
+                  [.3 \edge[blank]{}; \node[blank]{};
+                      [.4 \edge[blank]{}; \node[blank]{};
+                          [.5 \edge[blank]{}; \node[blank]{};
+                              [.6 \edge[blank]{}; \node[blank]{};
+                                  [.7 ] ] ] ] ] ] ]
+   \end{tikzpicture}
+  }
+ \end{center}
 \end{frame}
 
 \begin{frame}
  \frametitle{Self-balancing binary search trees}
+ \begin{itemize}
+  \item Performs rebalancing (``housekeeping") when carrying out
+        operations to ensure height of tree is $O(\lg n)$
+  \item Examples:
+  \begin{itemize}
+   \item Red-black trees (Java \texttt{TreeMap}, \texttt{TreeSet},
+         C++ \texttt{std::map}, \texttt{std::set})
+   \item AVL trees
+  \end{itemize}
+ \end{itemize}
 \end{frame}
 
 \section{Big-O notation}
