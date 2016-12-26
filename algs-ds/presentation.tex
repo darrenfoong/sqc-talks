@@ -16,8 +16,6 @@
  \titlepage
 \end{frame}
 
-\section{Introduction}
-
 \begin{frame}
  \frametitle{Overview}
  \tableofcontents
@@ -27,10 +25,57 @@
 
 \begin{frame}
  \frametitle{Git}
+  \visible<2->{
+   \begin{block}{Problem}
+    Find $n$ such that commit $n$ is ``good" and commit $n+1$
+    is ``bad", i.e.\ commit $n+1$ introduced the error.
+   \end{block}
+  }
+
+  \vspace{1cm}
+
+  \visible<1->{
+   \begin{center}
+   \scalebox{1.2} {
+    \begin{tikzpicture}
+     \draw (0,0) -- (8,0);
+
+     \foreach \i [evaluate=\i as \x using int(\i+50)]  in {0,...,8} {
+      \fill[blue] (\i cm, 0) circle (4pt);
+      \node at (\i cm, -12pt) {$\x$};
+     }
+
+     \fill[green] (0 cm, 0) circle (4pt);
+     \fill[red] (8 cm, 0) circle (4pt);
+
+     \pause
+     \pause
+     \fill[red](4 cm, 0) circle (4pt);
+
+     \pause
+     \draw[decoration={brace,raise=5pt},decorate] (1 cm, 0) -- (3 cm, 0) node[midway,yshift=0.5cm] {possibly bad};
+     \draw[decoration={brace,raise=5pt},decorate] (5 cm, 0) -- (7 cm, 0) node[midway,yshift=0.5cm] {definitely bad};
+
+    \end{tikzpicture}
+   }
+   \end{center}
+  }
 \end{frame}
 
-\begin{frame}
- \frametitle{Binary search}
+\begin{frame}[fragile]
+ \frametitle{\texttt{git bisect}}
+ \begin{itemize}
+  \item Linear search takes $7$ steps in the worst-case $\Rightarrow O(n)$
+  \item Binary search takes $\approx \lg_2 7$ steps in the worst-case $\Rightarrow O(\lg n)$
+  \item \texttt{git} has in-built binary search:
+  \begin{verbatim}
+$ git bisect start
+$ git bisect good
+$ git bisect bad
+...
+$ b41e... is the first bad commit
+  \end{verbatim}
+ \end{itemize}
 \end{frame}
 
 \begin{frame}
