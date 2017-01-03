@@ -157,24 +157,152 @@ $ b41e... is the first bad commit
 
 \begin{frame}
  \frametitle{Big-O notation}
+ \begin{itemize}
+  \item ``number of steps/amount of time needed as a function of input
+        size $n$"
+ \end{itemize}
+ \begin{center}
+ \begin{tabular}{rll}
+  constant & $O(1)$ & \texttt{HashMap.get(key)} \\
+  logarithmic & $O(\lg n)$ & binary search \\
+  linear & $O(n)$ & finding maximum value in an array \\
+  log-linear & $O(n \lg n)$ & merge sort \\
+  quadratic & $O(n^2)$ & insertion sort \\
+  cubic & $O(n^3)$ & matrix multiplication \\
+  exponential & $O(2^n)$ & travelling salesman problem \\
+ \end{tabular}
+ \end{center}
+ \begin{itemize}
+  \item base of $\lg$, $O$, $o$, $\omega$, $\Omega$, $\Theta$
+ \end{itemize}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Hidden constants}
+ \begin{itemize}
+  \item Beware of hidden constants
+  \item Also, abuse of notation
+ \end{itemize}
+ \begin{align*}
+  n^2 = O(n^2) \\
+  1234567890n^2 = O(n^2) \\
+  100n^2 + n + 1 = O(n^2) \\
+  n^3 + 10000000000000 = O(n^3) \\
+  1000000000000n \textnormal{ and } n^2 \textnormal{?} \\
+ \end{align*}
 \end{frame}
 
 \section{Sorting}
 
 \begin{frame}
  \frametitle{Insertion sort}
+ \begin{center}
+ \begin{tabular}{rl}
+  $\vert$ 4 3 5 6 1 2 & start; sorted on left, unsorted on right \pause \\
+  \underline{4} $\vert$ 3 5 6 1 2 & \pause \\
+  \underline{3} 4 $\vert$ 5 6 1 2 & \pause \\
+  3 4 \underline{5} $\vert$ 6 1 2 & \pause \\
+  3 4 5 \underline{6} $\vert$ 1 2 & \pause \\
+  \underline{1} 3 4 5 6 $\vert$ 2 & \pause \\
+  1 \underline{2} 3 4 5 6 $\vert$ & terminate when right is empty \pause \\
+ \end{tabular}
+ \end{center}
+ \begin{itemize}
+  \item Number of iterations: $n$
+  \item Number of operations in each iteration: average $n$
+  \item Average time complexity: $O(n^2)$
+  \item Worst case: $O(n^2)$ if the list is reversed
+  \item Best case: $O(n)$ if the list is already sorted
+ \end{itemize}
 \end{frame}
 
 \begin{frame}
  \frametitle{Merge sort}
+ \begin{itemize}
+  \item Divide-and-conquer approach
+  \item Idea: split list into two, recursive merge sort halves, merge
+        sorted halves
+ \end{itemize}
+ \begin{center}
+ \begin{tabular}{cl}
+  5 4 2 8 3 1 6 7 & start \pause \\
+  5 4 2 8 \hspace{0.5cm}  3 1 6 7 & split \pause \\
+  5 4 \hspace{0.5cm} 2 8 \hspace{0.5cm} 3 1 \hspace{0.5cm} 6 7 & split further \pause \\
+  4 5 \hspace{0.5cm} 2 8 \hspace{0.5cm} 1 3 \hspace{0.5cm} 6 7 & sort base case (two elements) \pause \\
+  2 4 5 8 \hspace{0.5cm} 1 3 6 7 & merge \pause \\
+  1 2 3 4 5 6 7 8 & merge again; terminate \pause \\
+ \end{tabular}
+ \end{center}
+ \begin{itemize}
+  \item Number of iterations: $2 \lg n = O(\lg n)$
+  \item Number of operations in each iteration: $n$
+  \item Average/best/worst case: $O(n \lg n)$
+ \end{itemize}
 \end{frame}
 
 \begin{frame}
  \frametitle{Quick sort}
+ \begin{itemize}
+  \item Divide-and-conquer approach
+  \item Idea: pick a \emph{pivot} element, quick sort list of elements
+        lesser than pivot, quick sort list of elements greater than
+        pivot
+ \end{itemize}
+ \begin{center}
+  \begin{tabular}{cl}
+   \underline{5} 4 2 8 3 1 6 7 & start; pick $5$ as pivot \pause \\
+   \framebox{2 3 1 4} 5 \framebox{8 6 7} & partition \pause \\
+   \framebox{\underline{2} 3 1 4} 5 \framebox{\underline{8} 6 7} & pick $2$ and $8$ as pivots \pause \\
+   \framebox{\framebox{1} 2 \framebox{3 4}} 5 \framebox{\framebox{6 7} 8} & partition; sort base case \pause \\
+   1 2 3 4 5 6 7 8 & terminate \pause \\
+  \end{tabular}
+ \end{center}
+ \begin{itemize}
+  \item Number of iterations: average $\lg n$
+  \item Number of operations per iteration: $n$
+  \item Average time complexity: $O(n \lg n)$
+  \item Worst case: $O(n^2)$ if pivot is the smallest/greatest
+  \item Best case: $O(n \lg n)$ if pivot is the median; reduces to merge
+        sort
+ \end{itemize}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Sorting in practice}
+ \begin{itemize}
+  \item Quick sort: need to pick a good pivot, does not guarantee $O(\lg n)$
+  \item Merge sort can perform worse than a well-implemented quick sort
+  \item In practice: merge sort (and/or) quick sort + insertion sort
+ \end{itemize}
 \end{frame}
 
 \begin{frame}
  \frametitle{Java implementation}
+ \begin{block}{Arrays.sort() (Java 7 onwards)}
+The sorting algorithm is a Dual-Pivot Quicksort by Vladimir
+Yaroslavskiy, Jon Bentley, and Joshua Bloch. This algorithm offers
+$O(n \lg n)$ performance on many data sets that cause other quicksorts
+to degrade to quadratic performance, and is typically faster than
+traditional (one-pivot) Quicksort implementations.
+ \end{block}
+ \begin{block}{Collections.sort()}
+The implementation was adapted from Tim Peters's list sort for Python
+(TimSort).
+ \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+ \frametitle{Java implementation}
+ \begin{verbatim}
+private static final int MAX_RUN_COUNT = 67;
+private static final int MAX_RUN_LENGTH = 33;
+private static final int QUICKSORT_THRESHOLD = 286;
+private static final int INSERTION_SORT_THRESHOLD = 47;
+private static final int
+  COUNTING_SORT_THRESHOLD_FOR_BYTE = 29;
+private static final int
+  COUNTING_SORT_THRESHOLD_FOR_SHORT_OR_CHAR = 3200;
+ \end{verbatim}
 \end{frame}
 
 \section{Maps}
