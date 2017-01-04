@@ -308,6 +308,29 @@ private static final int
 \section{Maps}
 
 \begin{frame}
+ \frametitle{Maps}
+ \begin{itemize}
+  \item Also known as ``tables" or ``dictionaries" (Python)
+  \item Store \emph{key-value pairs}
+ \end{itemize}
+ \begin{center}
+ Map interface \\
+ \vspace{0.5cm}
+ \begin{tabular}{c|c|c}
+  Map & Java & C++ \\
+  & \texttt{Map} & \texttt{std::map}/\texttt{std::unordered\_map} \\
+  \hline
+  put(key) & \texttt{put(key)} & \texttt{insert(key)} \\
+  get(key) & \texttt{get(key)} & \texttt{[key]} \\
+  delete(key) & \texttt{remove(key)} & \texttt{erase(key)} \\
+ \end{tabular}
+ \end{center}
+ \begin{itemize}
+  \item Implementations: binary search trees, hash tables
+ \end{itemize}
+\end{frame}
+
+\begin{frame}
  \frametitle{Search trees}
 \end{frame}
 
