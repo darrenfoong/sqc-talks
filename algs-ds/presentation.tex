@@ -331,18 +331,150 @@ private static final int
 \end{frame}
 
 \begin{frame}
- \frametitle{Search trees}
+ \frametitle{Binary search trees}
+ \begin{itemize}
+  \item Usual implementation: red-black trees (Java \texttt{TreeMap},
+        C++ \texttt{std::map})
+  \item Each tree node contains key and a pointer to the value
+  \item put(key) uses tree's insert method ($O(\lg n)$)
+  \item get(key) searches the tree in $O(\lg n)$ time
+  \item delete(key) uses tree's delete method ($O(\lg n)$)
+  \item Advantages over hash tables: can iterate on keys by order
+ \end{itemize}
 \end{frame}
 
 \begin{frame}
  \frametitle{Hash tables}
+ \begin{itemize}
+  \item Java \texttt{HashMap} and C++ \texttt{std::unordered\_map}
+  \item Need to calculate \emph{hash} of a key, but possibility of
+        collisions
+  \item If $h(k)$ maps strings to 32-bit integers, there is a chance
+        that $h(k_1) = h(k_2)$
+  \item Two approaches of handling collisions: chaining and open
+        addressing
+  \item Advantages over binary search trees: fast
+ \end{itemize}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Chaining}
+   \begin{center}
+   \scalebox{0.65} {
+    \begin{tikzpicture}
+     \foreach \i [evaluate=\i as \j using int(1+\i),
+                  evaluate=\i as \x using int(11-\i)] in {1,...,10} {
+      \draw (0, \i) rectangle (1, \j) node [midway] {\x};
+      \draw (1, \i + 0.5) -- (2, \i + 0.5);
+     }
+
+     \newcounter{a}
+     \setcounter{a}{0}
+
+     \foreach \i in {0,...,2} {
+      \draw (\i + 2, 10) rectangle (\i + 3, 11) node [midway] {$a_{\arabic{a}}$};
+      \stepcounter{a}
+     }
+
+     \foreach \i in {0,...,3} {
+      \draw (\i + 2, 7) rectangle (\i + 3, 8) node [midway] {$a_{\arabic{a}}$};
+      \stepcounter{a}
+     }
+
+     \foreach \i in {0,...,3} {
+      \draw (\i + 2, 4) rectangle (\i + 3, 5) node [midway] {$a_{\arabic{a}}$};
+      \stepcounter{a}
+     }
+
+     \foreach \i in {0,...,4} {
+      \draw (\i + 2, 1) rectangle (\i + 3, 2) node [midway] {$a_{\arabic{a}}$};
+      \stepcounter{a}
+     }
+
+     \foreach \i in {2,3,5,6,8,9} {
+      \filldraw[fill=white, draw=black] (2, \i + 0.5) circle (0.2);
+     }
+
+     \draw[decoration={brace},decorate] (-1, 1) -- (-1, 11) node[midway,xshift=-4cm] {buckets i.e.\ outputs of $h(k) \mod M$};
+
+    \end{tikzpicture}
+   }
+   \end{center}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Open addressing}
+  \begin{columns}[t]
+   \begin{column}{0.3\textwidth}
+   \begin{center}
+   \scalebox{0.7} {
+    \begin{tikzpicture}
+     \foreach \i [evaluate=\i as \j using int(1+\i),
+                  evaluate=\i as \x using int(17-\i)] in {1,...,16} {
+      \draw (0, \i) rectangle (1, \j) node [midway,xshift=-1cm] {\x};
+     }
+
+     \newcounter{b}
+     \setcounter{b}{0}
+
+     \foreach \i in {1,2,6,9,13,14,15} {
+      \draw (0, \i) rectangle (1, \i + 1) node [midway] {$a_{\arabic{b}}$};
+      \stepcounter{b}
+     }
+
+     \filldraw[fill=gray] (0, 8) rectangle (1, 9);
+
+     \draw [<-] (1, 14.5) arc (-90:90:0.5);
+     \draw [<-] (1, 13.5) arc (-90:90:0.5);
+     \draw [<-] (1, 12.5) arc (-90:90:0.5);
+     \draw [<-] (1, 8.5) arc (-90:90:0.5);
+    \end{tikzpicture}
+   }
+   \end{center}
+   \end{column}
+   \begin{column}{0.7\textwidth}
+    \begin{itemize}
+     \item Linear probing: insert into $h(k) + j \mod M$
+     \item Quadratic probing: insert into $h(k) + cj + dj^2 \mod M$
+     \item Double hashing: insert into $h_1(k) + j \cdot h_2(k) \mod M$
+     \item Deletion is non-trivial, need a special marker
+    \end{itemize}
+   \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Collisions}
+ \begin{itemize}
+  \item Quality of the hash function is crucial to hash table
+        performance
+  \item Extreme example: $h(k) = 1$ reduces chaining hash table to a
+        list with $O(n)$ performance
+  \item Java: if \texttt{o1.equals(o2)}, \\
+        then \texttt{o1.hashCode() == o2.hashCode()}
+  \item Java 8: chaining list becomes a binary search tree after
+        \texttt{TREEIFY\_THRESHOLD = 8}
+ \end{itemize}
 \end{frame}
 
 \begin{frame}
  \frametitle{Database indexing}
+ \begin{itemize}
+  \item A database index is basically a map, but which implementation?
+  \item In practice: B-trees (a generalisation of binary search trees),
+        providing retrieval in $O(\lg n)$ time
+  \item Hash tables do not provide order (important for \texttt{ORDER BY}
+        queries
+  \item B-tree nodes are blocks; reduce number of disk seeks
+  \item B-trees are in most file systems!
+ \end{itemize}
 \end{frame}
 
 \section{Priority queues}
+
+\begin{frame}
+ \frametitle{Priority queues}
+\end{frame}
 
 \begin{frame}
  \frametitle{Heap property}
@@ -350,22 +482,6 @@ private static final int
 
 \begin{frame}
  \frametitle{Other implementations}
-\end{frame}
-
-\section{Caveats}
-
-\begin{frame}
- \frametitle{Hidden constant}
-\end{frame}
-
-\begin{frame}
- \frametitle{Worst-case analysis}
-\end{frame}
-
-\section{How to tackle a problem}
-
-\begin{frame}
- \frametitle{Black box abstraction}
 \end{frame}
 
 \section{Interesting algorithms}
