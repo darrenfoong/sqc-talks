@@ -505,7 +505,7 @@ private static final int
   \item put(item): at to end of array, $O(1)$
   \item min(): linear search, $O(n)$
   \item extractMin(): linear search + shift, $O(n)$
-  \item decreaseKey(): decrease, $O(1)$
+  \item decreaseKey(item): decrease, $O(1)$
  \end{itemize}
 \end{frame}
 
@@ -518,7 +518,7 @@ private static final int
   \item put(item): binary search + shift, $O(n)$
   \item min(): head of array, $O(1)$
   \item extractMin(): head of array + shift, $O(n)$
-  \item decreaseKey(): decrease + shift, $O(n)$
+  \item decreaseKey(item): decrease + shift, $O(n)$
  \end{itemize}
 \end{frame}
 
@@ -543,7 +543,7 @@ private static final int
   \item put(item): tree insert method, $O(\lg n)$
   \item min(): find left-most item, $O(\lg n)$
   \item extractMin(): find left-most item, tree delete method, $O(\lg n)$
-  \item decreaseKey(): tree delete method, tree insert method, $O(\lg n)$
+  \item decreaseKey(item): tree delete method, tree insert method, $O(\lg n)$
  \end{itemize}
 \end{frame}
 
@@ -572,7 +572,7 @@ private static final int
   \item put(item): add to last, ``bubble up", $O(\lg n)$
   \item min(): root of tree, $O(1)$
   \item extractMin(): replace root with last, ``bubble down", $O(\lg n)$
-  \item decreaseKey(): decrease key, ``bubble up", $O(\lg n)$
+  \item decreaseKey(item): decrease key, ``bubble up", $O(\lg n)$
  \end{itemize}
 \end{frame}
 
