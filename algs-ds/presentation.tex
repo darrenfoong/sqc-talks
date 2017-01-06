@@ -211,8 +211,8 @@ $ b41e... is the first bad commit
   \item Number of iterations: $n$
   \item Number of operations in each iteration: average $n$
   \item Average time complexity: $O(n^2)$
-  \item Worst case: $O(n^2)$ if the list is reversed
-  \item Best case: $O(n)$ if the list is already sorted
+  \item Worst case: $O(n^2)$ if the array is reversed
+  \item Best case: $O(n)$ if the array is already sorted
  \end{itemize}
 \end{frame}
 
@@ -220,7 +220,7 @@ $ b41e... is the first bad commit
  \frametitle{Merge sort}
  \begin{itemize}
   \item Divide-and-conquer approach
-  \item Idea: split list into two, recursive merge sort halves, merge
+  \item Idea: split array into two, recursive merge sort halves, merge
         sorted halves
  \end{itemize}
  \begin{center}
@@ -244,8 +244,8 @@ $ b41e... is the first bad commit
  \frametitle{Quick sort}
  \begin{itemize}
   \item Divide-and-conquer approach
-  \item Idea: pick a \emph{pivot} element, quick sort list of elements
-        lesser than pivot, quick sort list of elements greater than
+  \item Idea: pick a \emph{pivot} element, quick sort array of elements
+        lesser than pivot, quick sort array of elements greater than
         pivot
  \end{itemize}
  \begin{center}
@@ -448,12 +448,15 @@ private static final int
  \begin{itemize}
   \item Quality of the hash function is crucial to hash table
         performance
-  \item Extreme example: $h(k) = 1$ reduces chaining hash table to a
-        list with $O(n)$ performance
+  \item put(), get(), and delete() are $O(1)$ if hash function is good
+  \item Extreme example: $h(k) = 1$ reduces chaining hash table to an
+        array with $O(n)$ performance
   \item Java: if \texttt{o1.equals(o2)}, \\
         then \texttt{o1.hashCode() == o2.hashCode()}
-  \item Java 8: chaining list becomes a binary search tree after
+  \item Java 8: chaining array becomes a binary search tree after
         \texttt{TREEIFY\_THRESHOLD = 8}
+  \item Hash tables are initialised with a small capacity; dynamically
+        resized upon reaching some threshold (load factor)
  \end{itemize}
 \end{frame}
 
@@ -474,14 +477,116 @@ private static final int
 
 \begin{frame}
  \frametitle{Priority queues}
+ \begin{itemize}
+  \item Like a queue, but each item has a priority
+ \end{itemize}
+ \begin{center}
+ Priority queue interface \\
+ \vspace{0.5cm}
+ \begin{tabular}{c|c|c}
+  Map & Java & C++ \\
+  & \texttt{PriorityQueue} & \texttt{std::priority\_queue} \\
+  \hline
+  put(item) & \texttt{add(item)} & \texttt{push(key)} \\
+  min() & \texttt{peek()} & \texttt{top()} \\
+  extractMin() & \texttt{poll()} & \texttt{pop()} \\
+  decreaseKey(item) & \texttt{remove(item)+} & - \\
+  & \texttt{add(item)} & \\
+ \end{tabular}
+ \end{center}
 \end{frame}
 
 \begin{frame}
- \frametitle{Heap property}
+ \frametitle{Unsorted array}
+ \begin{center}
+  4 5 7 9 2 1 0 8 3 6
+ \end{center}
+ \begin{itemize}
+  \item put(item): at to end of array, $O(1)$
+  \item min(): linear search, $O(n)$
+  \item extractMin(): linear search + shift, $O(n)$
+  \item decreaseKey(): decrease, $O(1)$
+ \end{itemize}
 \end{frame}
 
 \begin{frame}
- \frametitle{Other implementations}
+ \frametitle{Sorted array}
+ \begin{center}
+  0 1 2 3 4 5 6 7 8 9
+ \end{center}
+ \begin{itemize}
+  \item put(item): binary search + shift, $O(n)$
+  \item min(): head of array, $O(1)$
+  \item extractMin(): head of array + shift, $O(n)$
+  \item decreaseKey(): decrease + shift, $O(n)$
+ \end{itemize}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Binary search tree}
+ \begin{center}
+  \scalebox{0.6} {
+   \begin{tikzpicture}[every tree node/.style={minimum width=0.5cm,
+                                               draw,
+                                               circle},
+                       edge from parent/.style={draw,
+                                                edge from parent path={
+                                                 (\tikzparentnode) --
+                                                 (\tikzchildnode)}},
+                       sibling distance=1.0cm,
+                       level distance=1.5cm]
+    \Tree [.5 [.2 [.1 [.0 ] ] [.3 [.4 ] ] ] [.7 [.6 ] [.8 [.9 ]] ] ]
+   \end{tikzpicture}
+  }
+ \end{center}
+ \begin{itemize}
+  \item put(item): tree insert method, $O(\lg n)$
+  \item min(): find left-most item, $O(\lg n)$
+  \item extractMin(): find left-most item, tree delete method, $O(\lg n)$
+  \item decreaseKey(): tree delete method, tree insert method, $O(\lg n)$
+ \end{itemize}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Binary heap}
+ \begin{center}
+  \scalebox{0.6} {
+   \begin{tikzpicture}[every tree node/.style={minimum width=0.5cm,
+                                               draw,
+                                               circle},
+                       edge from parent/.style={draw,
+                                                edge from parent path={
+                                                 (\tikzparentnode) --
+                                                 (\tikzchildnode)}},
+                       sibling distance=1.0cm,
+                       level distance=1.5cm]
+    \Tree [.0 [.2 [.5 [.9 ] [.7 ] ] [.6 [.8 ] ] ] [.1 [.4 ] [.3 ] ] ]
+   \end{tikzpicture}
+  }
+ \end{center}
+ \begin{itemize}
+  \item Binary heap: complete binary tree
+  \item Heap property: children are always greater than the parent
+  \item ``Bubble up": rotate children and parents at each level until
+        heap property is satisfied
+  \item put(item): add to last, ``bubble up", $O(\lg n)$
+  \item min(): root of tree, $O(1)$
+  \item extractMin(): replace root with last, ``bubble down", $O(\lg n)$
+  \item decreaseKey(): decrease key, ``bubble up", $O(\lg n)$
+ \end{itemize}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Applications of priority queues}
+ \begin{itemize}
+  \item Dijkstra's shortest path algorithm
+  \item Process scheduling
+  \item Other implementations:
+  \begin{itemize}
+   \item Binomial heap: insert() in $O(1)$
+   \item Fibonacci heap: decreaseKey() in $O(1)$
+  \end{itemize}
+ \end{itemize}
 \end{frame}
 
 \section{Interesting algorithms}
