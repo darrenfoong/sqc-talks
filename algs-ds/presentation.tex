@@ -593,6 +593,17 @@ private static final int
 \end{frame}
 
 \begin{frame}
+ \frametitle{Aside: implementing a binary heap}
+ \begin{itemize}
+  \item A binary heap can be efficiently implemented as an array: $O(n)$
+        space
+  \item All binary heap operations can be done \emph{in-place}
+  \item Heap sort: put(item) $n$ times, extractMin() $n$ times,
+        $O(n \lg n)$, $O(n)$ space
+ \end{itemize}
+\end{frame}
+
+\begin{frame}
  \frametitle{Applications of priority queues}
  \begin{itemize}
   \item Dijkstra's shortest path algorithm
