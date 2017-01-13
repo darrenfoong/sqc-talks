@@ -241,6 +241,20 @@ $ b41e... is the first bad commit
 \end{frame}
 
 \begin{frame}
+ \frametitle{Aside: implementing merge sort}
+ \begin{itemize}
+  \item What is wrong with this C implementation of merge sort?
+ \end{itemize}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Aside: tail-call optimisation}
+ \begin{itemize}
+  \item TODO
+ \end{itemize}
+\end{frame}
+
+\begin{frame}
  \frametitle{Quick sort}
  \begin{itemize}
   \item Divide-and-conquer approach
@@ -273,6 +287,8 @@ $ b41e... is the first bad commit
   \item Quick sort: need to pick a good pivot, does not guarantee $O(\lg n)$
   \item Merge sort can perform worse than a well-implemented quick sort
   \item In practice: merge sort (and/or) quick sort + insertion sort
+  \item Merge sort is also used as a basis for \emph{external sort},
+        i.e.\ the amount of data to sort cannot fit into memory
  \end{itemize}
 \end{frame}
 
@@ -593,18 +609,187 @@ private static final int
 
 \begin{frame}
  \frametitle{Bloom filter}
+ \begin{itemize}
+  \item Probabilistic data structure
+ \end{itemize}
+ \begin{center}
+ Bloom filter interface \\
+ \vspace{0.5cm}
+ \begin{tabular}{c}
+  Bloom filter \\
+  \hline
+  put(item) \\
+  exists(item) \\
+ \end{tabular}
+ \end{center}
+ \begin{itemize}
+  \item If exists(item) is true, then the item \emph{may} be in the set
+  \item If exists(item) is false, then the item is definitely not in the
+        set
+  \item No delete(item)
+ \end{itemize}
 \end{frame}
 
 \begin{frame}
- \frametitle{Knapsack problem}
+ \frametitle{Bloom filter}
+ \begin{itemize}
+  \item Empty Bloom filter: backing array of $M$ bits, all $0$
+  \item $k$ different hash functions mapping elements to
+        $\{0,1,\cdots,M-1\}$
+ \end{itemize}
+  \begin{center}
+  \scalebox{0.65} {
+   \begin{tikzpicture}
+    \draw (-3, 1) [draw=none] rectangle (1, 2) node [midway] {$h_1(e_1), h_2(e_1), h_3(e_1)$};
+
+    \foreach \i in {0,...,9} {
+     \draw (\i + 2, 1) rectangle (\i + 3, 2);
+    }
+
+     \foreach \i in {1,5,9} {
+      \draw (\i + 2, 1) rectangle (\i + 3, 2) node [midway] {1};
+     }
+
+    \draw (-3, 2.5) [draw=none] rectangle (1, 3.5) node [midway] {$h_1(e_2), h_2(e_2), h_3(e_2)$};
+
+    \foreach \i in {0,...,9} {
+     \draw (\i + 2, 2.5) rectangle (\i + 3, 3.5);
+    }
+
+     \foreach \i in {2,7,8} {
+      \draw (\i + 2, 2.5) rectangle (\i + 3, 3.5) node [midway] {1} ;
+     }
+
+    \draw (-3, 4) [draw=none] rectangle (1, 5) node [midway] {$h_1(e_3), h_2(e_3), h_3(e_3)$};
+
+    \foreach \i in {0,...,9} {
+     \draw (\i + 2, 4) rectangle (\i + 3, 5);
+    }
+
+     \foreach \i in {1,3,8} {
+      \draw (\i + 2, 4) rectangle (\i + 3, 5) node [midway] {1};
+     }
+
+    \draw (-3, 5.5) [draw=none] rectangle (1, 6.5) node [midway] {Backing array};
+
+    \foreach \i in {0,...,9} {
+     \draw (\i + 2, 5.5) [line width=1mm] rectangle (\i + 3, 6.5);
+    }
+
+     \foreach \i in {1,2,3,5,7,8,9} {
+      \draw (\i + 2, 5.5) [line width=1mm] rectangle (\i + 3, 6.5) node [midway] {1};
+     }
+   \end{tikzpicture}
+  }
+  \end{center}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Bloom filter}
+ \begin{itemize}
+  \item A normal set implementation uses binary search trees (e.g.\
+        \texttt{TreeSet}) or hash tables (e.g.\ \texttt{HashSet})
+  \item A Bloom filter uses $O(1)$ space
+  \item put(item) is $O(k)$, exists(item) is $O(k)$; can be parallelised
+  \item Performance depends on quality of hash functions
+ \end{itemize}
+\end{frame}
+
+\begin{frame}
+ \frametitle{What's the point?}
+ \begin{itemize}
+  \item Saves on expensive lookups, at the cost of false positives
+  \item Web crawling: ``\emph{have I already indexed this site?}"
+   \begin{itemize}
+    \item Small chance that you do not crawl an uncrawled site
+   \end{itemize}
+  \item Recommendation systems: ``\emph{has the user already seen this
+        before?}"
+   \begin{itemize}
+    \item Small chance that you do not recommend something the user has
+          not seen before
+   \end{itemize}
+  \item OkCupid saved 1.2 TB of RAM (a third of previous usage) by using
+        Bloom filters for their match recommendation system
+ \end{itemize}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Preliminary: run-length encoding}
+ \begin{itemize}
+  \item How would you compress \emph{aaaaa} or \emph{yamyam}?
+  \item Run-length encoding: store consecutive repeating elements as
+        (element, number), e.g.\ \emph{a[5]}, \emph{yam[2]},
+        \emph{jeff[200]}
+  \item A form of \emph{lossless} compression
+ \end{itemize}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Burrows-Wheeler transform}
+ \begin{itemize}
+  \item Consider a string ``banana"
+  \item Append a terminator ``\$" and list all \emph{rotations}:
+ \end{itemize}
+ \begin{center}
+  \begin{tabular}{l}
+   banana\$ \\
+   \$banana \\
+   a\$banan \\
+   na\$bana \\
+   ana\$ban \\
+   nana\$ba \\
+   anana\$b \\
+  \end{tabular}
+ \end{center}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Burrows-Wheeler transform}
+ \begin{itemize}
+  \item Sort table by lexical order (``\$" is ordered last):
+ \end{itemize}
+ \begin{center}
+  \begin{tabular}{l}
+   anana\$b \\
+   ana\$ban \\
+   a\$banan \\
+   banana\$ $\leftarrow$ original string \\
+   nana\$ba \\
+   na\$bana \\
+   \$banana \\
+  \end{tabular}
+ \end{center}
+ \begin{itemize}
+  \item Store \emph{last column}: ``bnn\$aaa"
+  \item Claim: can reconstruct ``banana" from the stored string
+  \item (Magically) better for run-length encoding, but why?
+ \end{itemize}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Reconstruction}
+ \begin{itemize}
+  \item Obtain first column ``aaabnn\$" by sorting last column
+        ``bnn\$aaa"
+  \item Property: $i$-th occurrence of a character in the first column
+        is the $i$-th occurrence of the character in the last column
+ \end{itemize}
+ \begin{center}
+  \begin{tabular}{lll}
+   a & \hspace{1.0cm} & b \\
+   a & \hspace{1.0cm} & n \\
+   a & \hspace{1.0cm} & n \\
+   b & \hspace{1.0cm} & \$ $\leftarrow$ original string \\
+   n & \hspace{1.0cm} & a \\
+   n & \hspace{1.0cm} & a \\
+   \$ & \hspace{1.0cm} & a \\
+  \end{tabular}
+ \end{center}
 \end{frame}
 
 \begin{frame}
  \frametitle{Point in polygon}
-\end{frame}
-
-\begin{frame}
- \frametitle{Why is grep so fast?}
 \end{frame}
 
 \section{Conclusions}
