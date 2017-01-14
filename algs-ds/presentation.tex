@@ -265,8 +265,7 @@ void mergesort(int a[], int i, int j)
   \item \texttt{int} ranges from $-2147483648$ to $2147483647$
   \item \texttt{mid = (i+j)/2} will overflow for sufficiently large
         values of $i$ and $j$
-  \item Solution: check input array size, and use
-        \texttt{mid = i + (j-i)/2}
+  \item Solution: use \texttt{mid = i + (j-i)/2}
   \item Top-down merge sort may cause a stack overflow due to recursion
   \item Solution: bottom-up merge sort (sort small sub-arrays first,
         then merge upwards)
