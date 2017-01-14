@@ -240,18 +240,49 @@ $ b41e... is the first bad commit
  \end{itemize}
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
  \frametitle{Aside: implementing merge sort}
  \begin{itemize}
   \item What is wrong with this C implementation of merge sort?
  \end{itemize}
+ \begin{verbatim}
+void mergesort(int a[], int i, int j)
+{
+    int mid;
+    if( i < j ) {
+        mid = (i+j)/2;
+        mergesort(a, i, mid);
+        mergesort(a, mid+1, j);
+        merge(a, i, mid, mid+1, j);
+    }
+}
+ \end{verbatim}
 \end{frame}
 
 \begin{frame}
+ \frametitle{Aside: implementing merge sort}
+ \begin{itemize}
+  \item \texttt{int} ranges from $-2147483648$ to $2147483647$
+  \item \texttt{mid = (i+j)/2} will overflow for sufficiently large
+        values of $i$ and $j$
+  \item Solution: check input array size, and use
+        \texttt{mid = i + (j-i)/2}
+  \item Top-down merge sort may cause a stack overflow due to recursion
+  \item Solution: bottom-up merge sort (sort small sub-arrays first,
+        then merge upwards)
+  \item Not just limited to C!
+ \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
  \frametitle{Aside: tail-call optimisation}
  \begin{itemize}
-  \item TODO
+  \item Recursion does not necessarily mean that a stack overflow will
+        occur
+  \item Tail-call optimisation depends on the language implementation
  \end{itemize}
+ \begin{lstinputlisting}[language=Haskell, firstline=3, lastline=14]{fact.hs}
+ \end{lstinputlisting}
 \end{frame}
 
 \begin{frame}
