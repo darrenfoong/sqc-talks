@@ -198,15 +198,16 @@ $ b41e... is the first bad commit
  \frametitle{Insertion sort}
  \begin{center}
  \begin{tabular}{rl}
-  $\vert$ 4 3 5 6 1 2 & start; sorted on left, unsorted on right \pause \\
-  \underline{4} $\vert$ 3 5 6 1 2 & \pause \\
-  \underline{3} 4 $\vert$ 5 6 1 2 & \pause \\
-  3 4 \underline{5} $\vert$ 6 1 2 & \pause \\
-  3 4 5 \underline{6} $\vert$ 1 2 & \pause \\
-  \underline{1} 3 4 5 6 $\vert$ 2 & \pause \\
-  1 \underline{2} 3 4 5 6 $\vert$ & terminate when right is empty \pause \\
+  \onslide<1,8>{$\vert$ 4 3 5 6 1 2 & start; sorted on left, unsorted on right} \\
+  \onslide<2,8>{\underline{4} $\vert$ 3 5 6 1 2 &} \\
+  \onslide<3,8>{\underline{3} 4 $\vert$ 5 6 1 2 &} \\
+  \onslide<4,8>{3 4 \underline{5} $\vert$ 6 1 2 &} \\
+  \onslide<5,8>{3 4 5 \underline{6} $\vert$ 1 2 &} \\
+  \onslide<6,8>{\underline{1} 3 4 5 6 $\vert$ 2 &} \\
+  \onslide<7->{1 \underline{2} 3 4 5 6 $\vert$ & terminate when right is empty} \\
  \end{tabular}
  \end{center}
+ \uncover<8>{
  \begin{itemize}
   \item Number of iterations: $n$
   \item Number of operations in each iteration: average $n$
@@ -214,6 +215,7 @@ $ b41e... is the first bad commit
   \item Worst case: $O(n^2)$ if the array is reversed
   \item Best case: $O(n)$ if the array is already sorted
  \end{itemize}
+ }
 \end{frame}
 
 \begin{frame}
@@ -225,19 +227,21 @@ $ b41e... is the first bad commit
  \end{itemize}
  \begin{center}
  \begin{tabular}{cl}
-  5 4 2 8 3 1 6 7 & start \pause \\
-  5 4 2 8 \hspace{0.5cm}  3 1 6 7 & split \pause \\
-  5 4 \hspace{0.5cm} 2 8 \hspace{0.5cm} 3 1 \hspace{0.5cm} 6 7 & split further \pause \\
-  4 5 \hspace{0.5cm} 2 8 \hspace{0.5cm} 1 3 \hspace{0.5cm} 6 7 & sort base case (two elements) \pause \\
-  2 4 5 8 \hspace{0.5cm} 1 3 6 7 & merge \pause \\
-  1 2 3 4 5 6 7 8 & merge again; terminate \pause \\
+  \onslide<1,7>{5 4 2 8 3 1 6 7 & start} \\
+  \onslide<2,7>{5 4 2 8 \hspace{0.5cm} 3 1 6 7 & split} \\
+  \onslide<3,7>{5 4 \hspace{0.5cm} 2 8 \hspace{0.5cm} 3 1 \hspace{0.5cm} 6 7 & split further} \\
+  \onslide<4,7>{4 5 \hspace{0.5cm} 2 8 \hspace{0.5cm} 1 3 \hspace{0.5cm} 6 7 & sort base case (two elements)} \\
+  \onslide<5,7>{2 4 5 8 \hspace{0.5cm} 1 3 6 7 & merge} \\
+  \onslide<6->{1 2 3 4 5 6 7 8 & merge again; terminate} \\
  \end{tabular}
  \end{center}
+ \uncover<7>{
  \begin{itemize}
   \item Number of iterations: $2 \lg n = O(\lg n)$
   \item Number of operations in each iteration: $n$
   \item Average/best/worst case: $O(n \lg n)$
  \end{itemize}
+ }
 \end{frame}
 
 \begin{frame}[fragile]
@@ -265,7 +269,7 @@ void mergesort(int a[], int i, int j)
   \item \texttt{int} ranges from $-2147483648$ to $2147483647$
   \item \texttt{mid = (i+j)/2} will overflow for sufficiently large
         values of $i$ and $j$
-  \item Solution: use \texttt{mid = i + (j-i)/2}
+  \item Solution: use \texttt{mid = i + (j-i)/2} \pause
   \item Top-down merge sort may cause a stack overflow due to recursion
   \item Solution: bottom-up merge sort (sort small sub-arrays first,
         then merge upwards)
@@ -294,13 +298,14 @@ void mergesort(int a[], int i, int j)
  \end{itemize}
  \begin{center}
   \begin{tabular}{cl}
-   \underline{5} 4 2 8 3 1 6 7 & start; pick $5$ as pivot \pause \\
-   \framebox{2 3 1 4} 5 \framebox{8 6 7} & partition \pause \\
-   \framebox{\underline{2} 3 1 4} 5 \framebox{\underline{8} 6 7} & pick $2$ and $8$ as pivots \pause \\
-   \framebox{\framebox{1} 2 \framebox{3 4}} 5 \framebox{\framebox{6 7} 8} & partition; sort base case \pause \\
-   1 2 3 4 5 6 7 8 & terminate \pause \\
+   \onslide<1,6>{\underline{5} 4 2 8 3 1 6 7 & start; pick $5$ as pivot} \\
+   \onslide<2,6>{\framebox{2 3 1 4} 5 \framebox{8 6 7} & partition} \\
+   \onslide<3,6>{\framebox{\underline{2} 3 1 4} 5 \framebox{\underline{8} 6 7} & pick $2$ and $8$ as pivots} \\
+   \onslide<4,6>{\framebox{\framebox{1} 2 \framebox{3 4}} 5 \framebox{\framebox{6 7} 8} & partition; sort base case} \\
+   \onslide<5->{1 2 3 4 5 6 7 8 & terminate} \\
   \end{tabular}
  \end{center}
+ \uncover<6>{
  \begin{itemize}
   \item Number of iterations: average $\lg n$
   \item Number of operations per iteration: $n$
@@ -309,6 +314,7 @@ void mergesort(int a[], int i, int j)
   \item Best case: $O(n \lg n)$ if pivot is the median; reduces to merge
         sort
  \end{itemize}
+ }
 \end{frame}
 
 \begin{frame}
@@ -831,6 +837,95 @@ private static final int
 
 \begin{frame}
  \frametitle{Point in polygon}
+ \begin{itemize}
+  \item Problem: does a point lie in a polygon?
+ \end{itemize}
+ \begin{center}
+  \scalebox{1.0} {
+   \begin{tikzpicture}
+    \draw (0,0) -- (5,1) -- (6,2) -- (1,4) -- cycle;
+    \fill (-1,3) circle [radius=0.5mm];
+   \end{tikzpicture}
+  }
+ \end{center}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Dot products}
+ \begin{itemize}
+  \item Consider a \emph{face} of the polygon with an \emph{inside} and
+        \emph{outside}, and a normal vector $\vect{n}$ facing outwards
+  \item Recall that the dot product of $\vect{a}$ and $\vect{b}$ is
+        $|\vect{a}||\vect{b}| \cos \theta$, and $\cos \theta < 0$ for
+        $90^\circ < \theta < 270^\circ$
+  \item Let $\vect{p}$ be the vector from the start vertex of the face
+        to the point $P$
+  \item If $\vect{n} \cdot \vect{p} > 0$ then $P$ is outside the face
+ \end{itemize}
+ \begin{center}
+  \scalebox{1.0} {
+   \begin{tikzpicture}
+    \draw (0,0) [dashed] -- (3,0);
+    \draw (7,0) [dashed] -- (10,0);
+    \draw (3,0) [line width=0.5mm] -- (7,0);
+    \draw (3,0) [->, line width=0.2mm] -- (3,1);
+
+    \draw (3,0) [->] -- (1,1);
+    \draw (3,0) [->] -- (1,-1);
+
+    \draw (8,1) node {outside ($\cos \theta > 0 \Rightarrow \vect{n} \cdot \vect{p} > 0$)};
+    \draw (8,-1) node {inside ($\cos \theta < 0 \Rightarrow \vect{n} \cdot \vect{p} < 0$)};
+    \draw (3.2,0.5) node {$\vect{n}$};
+    \draw (0.8,1.1) node {$\vect{p}_1$};
+    \draw (0.8,-1.1) node {$\vect{p}_2$};
+   \end{tikzpicture}
+  }
+ \end{center}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Point in convex polygon}
+ \begin{itemize}
+  \item Perform dot product check of point with all faces
+  \begin{itemize}
+   \item If dot product $> 0$, then the point is definitely outside the
+         polygon; terminate
+   \item If dot product $< 0$, then the point \emph{may} be inside the
+         polygon; continue
+   \item If all dot products $< 0$, the point is inside the convex
+         polygon
+  \end{itemize}
+  \item Does not work for concave polygons (create your own
+        counter-example)
+ \end{itemize}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Point in concave polygon}
+ \begin{itemize}
+  \item Extend a ray from the point to ``infinity", and count the number
+        of times the ray crosses the polygon
+  \begin{itemize}
+   \item If even, then the point is outside the polygon
+   \item If odd, then the point is inside the polygon
+  \end{itemize}
+ \end{itemize}
+ \begin{center}
+  \scalebox{1.0} {
+   \begin{tikzpicture}
+    \draw (0,0) -- (3,-1) -- (4,0) -- (5,-1) -- (6,2) -- cycle;
+
+    \fill (-1,1.5) circle [radius=0.5mm];
+    \draw (-1,1.5) [dashed] -- (7,1.5) node [xshift=0.7mm] {2};
+    \fill (2,-0.5) circle [radius=0.5mm];
+    \draw (2,-0.5) [dashed] -- (7,-0.5) node [xshift=0.7mm] {3};
+   \end{tikzpicture}
+  }
+ \end{center}
+ \begin{itemize}
+  \item Tricky to implement due to edge cases
+  \item A collolary of the Jordan curve theorem
+ \end{itemize}
 \end{frame}
 
 \section{Conclusions}
