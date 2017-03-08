@@ -1,0 +1,60 @@
+\documentclass{beamer}
+\usetheme{Rochester}
+\mode<presentation>
+
+\title{SHAttered}
+
+\date{March 2017}
+
+\begin{document}
+
+\begin{frame}
+ \frametitle{First known SHA-1 collision}
+ \begin{itemize}
+  \item On 23 Feb 2017, Google announced the first SHA-1 collision
+        attack (\url{https://shattered.io/}) \pause
+  \item Two different PDFs, same SHA-1 hash \pause
+  \item Effort: 6500 CPU-years \emph{and} 110 GPU-years \pause
+  \item Countermeasures: counter-cryptanalysis \pause
+  \item Online tool to generate colliding PDFs \pause
+  \begin{itemize}
+   \item \url{https://github.com/nneonneo/sha1collider/}
+  \end{itemize}
+ \end{itemize}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Demonstration}
+ \begin{itemize}
+  \item Original PDFs
+  \item Generated PDFs
+ \end{itemize}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Some theory}
+ \begin{block}{Pre-image resistance}
+  Given $y$, it is infeasible to compute $x$ such that $h(x) = y$
+ \end{block} \pause
+ \begin{block}{Second pre-image resistance}
+  Given $x$, it is infeasible to compute $x'$ such that $h(x) = h(x')$
+ \end{block} \pause
+ \begin{block}{Collision resistance}
+  It is infeasible to compute $x$ and $x'$ such that $h(x) = h(x')$
+ \end{block} \pause
+ \begin{itemize}
+  \item This is an instance of a \emph{collision attack}: find two
+        different files that produce the same hash
+ \end{itemize}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Consequences}
+ \begin{itemize}
+  \item Crash SVN \pause
+  \item Git? \pause
+  \item Don't use SHA-1 anymore
+ \end{itemize}
+\end{frame}
+
+\end{document}
